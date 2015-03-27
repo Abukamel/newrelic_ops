@@ -1,4 +1,4 @@
 #!/usr/bin/env python
-import saltstack
+from newrelic_ops import saltstack
 
 saltstack.install()
