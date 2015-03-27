@@ -11,6 +11,7 @@ setup(name='newrelic_ops',
       license='MIT',
       packages=['newrelic_ops'],
       install_requires=['cement', 'salt'],
+      dependency_links=['https://pypi.python.org/pypi/salt'],
       scripts=['bin/new_relic'],
       include_package_data=True,
       zip_safe=False)
