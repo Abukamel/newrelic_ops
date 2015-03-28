@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(name='newrelic_ops',
-      version='0.5',
+      version='0.6',
       description='newrelic manipulation tool',
-      long_description=open('README.md').read(),
+      long_description=open('README').read(),
       keywords='newrelic install saltstack automatic',
       url='https://github.com/Abukamel/newrelic_ops',
       author='Ahmed Kamel',
