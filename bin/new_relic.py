@@ -17,7 +17,6 @@ def salt_init():
               is_flag=True)
 @click.option('-k', '--key', help='new relic data access key', default=False)
 def main(install, key):
-    """help page"""
     if not install:
         click.echo('Try new_relic --help for useful information!')
     else:
@@ -29,7 +28,8 @@ def main(install, key):
             newrelic_package='newrelic-sysmond',
             newrelic_license_cmd=r"nrsysmond-config --set license_key='%(l_key)s'"
             % {'l_key': key},
-            newrelic_start_cmd=r"/etc/init.d/newrelic-sysmond start")
+            newrelic_start_cmd=r"/etc/init.d/newrelic-sysmond restart",
+            newrelic_chkconfig_cmd='chkconfig newrelic-sysmond on')
         click.echo(caller.sminion.functions['pkg.install'](sources=[
             {'repo': info['newrelic_url']}
         ]))
@@ -40,6 +40,9 @@ def main(install, key):
             caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
         click.echo(
             caller.sminion.functions['cmd.run'](info['newrelic_start_cmd']))
+        click.echo(
+            caller.sminion.functions['cmd.run'](info['newrelic_chkconfig_cmd'])
+        )
 
 
 if __name__ == "__main__":
