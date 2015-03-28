@@ -14,7 +14,8 @@ def salt_init():
 info = dict(
     newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/\
                  newrelic-repo-5-3.noarch.rpm',
-    newrelic_package='newrelic-sysmond'
+    newrelic_package='newrelic-sysmond',
+    newrelic_license_cmd='nrsysmond-config --set license_key=%(l_key)s' % {'l_key': key}
     )
 
 
@@ -34,6 +35,7 @@ def main(install, key):
         caller.sminion.functions['pkg.install'](name=info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}])
         click.echo('%(nl_pkg)s has been installed!' % {'nl_pkg': info['newrelic_package']})
+        caller.sminion.functions['cmd.run'](name=info[newrelic_license_cmd],)
 
 
 if __name__ == "__main__":
