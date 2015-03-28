@@ -1,4 +1,27 @@
 #!/usr/bin/env python
-from newrelic_ops import saltstack
+import click
+import salt.config
+import salt.client
 
-saltstack.install()
+opts = salt.config.apply_minion_config()
+opts['file_client'] = 'local'
+caller = salt.client.Caller(mopts=opts)
+info = dict(
+    newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm',
+    newrelic_package='newrelic-sysmond'
+    )
+
+
+@click.command()
+@click.option('-i', '--install', help='Install new relic system monitor',
+              is_flag=True)
+@click.option('-k', '--key', help='new relic data access key', default=False)
+def main(install, key):
+    if not install:
+        click.echo(click.help_option())
+    else:
+        if not key:
+            key = click.prompt('NewRelic data access key')
+        caller.sminion.functions['pkg.install'](info['newrelic_url'])
+        caller.sminion.functions['pkg.install'](name=info['newrelic_package'],
+                                                require=[{'pkg': info['newrelic_url']}])
