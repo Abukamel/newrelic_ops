@@ -12,6 +12,6 @@ setup(name='newrelic_ops',
       packages=['newrelic_ops'],
       install_requires=['click', 'salt'],
       dependency_links=['https://pypi.python.org/pypi/salt'],
-      scripts=['bin/new_relic'],
+      scripts=['bin/new_relic.py'],
       include_package_data=True,
       zip_safe=False)
