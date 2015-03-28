@@ -4,7 +4,7 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='newrelic_ops',
-      version='0.6',
+      version='1.0',
       description='newrelic manipulation tool',
       long_description=open('README').read(),
       keywords='newrelic install saltstack automatic',
