@@ -11,14 +11,6 @@ def salt_init():
     return caller
 
 
-info = dict(
-    newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/\
-                 newrelic-repo-5-3.noarch.rpm',
-    newrelic_package='newrelic-sysmond',
-    newrelic_license_cmd='nrsysmond-config --set license_key=%(l_key)s' % {'l_key': key}
-    )
-
-
 @click.command()
 @click.option('-i', '--install', help='Install new relic system monitor',
               is_flag=True)
