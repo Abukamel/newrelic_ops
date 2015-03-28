@@ -28,7 +28,7 @@ def main(install, key):
         if not key:
             key = click.prompt('NewRelic data access key')
         caller = salt_init()
-        caller.sminion.functions['pkg.install'](name=info['newrelic_url'])
+        caller.sminion.functions['pkg.install'](sources=[{'repo': info['newrelic_url']}])
         click.echo(('NewRelic repo has been added!'))
         caller.sminion.functions['pkg.install'](name=info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}])
