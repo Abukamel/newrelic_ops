@@ -38,7 +38,7 @@ def main(install, key):
         logger.info('NewRelic repo has been added!')
         caller.sminion.functions['pkg.install'](name=info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}])
-        logger.info('%(nl_pkg)s has been installed!' % {nl_pkg: info['newrelic_package']})
+        logger.info('%(nl_pkg)s has been installed!' % {'nl_pkg': info['newrelic_package']})
 
 
 if __name__ == "__main__":
