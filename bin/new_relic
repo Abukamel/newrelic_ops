@@ -31,3 +31,7 @@ def main(install, key):
         caller.sminion.functions['pkg.install'](name=info['newrelic_url'])
         caller.sminion.functions['pkg.install'](name=info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}])
+
+
+if __name__ == "__main__":
+    main()
