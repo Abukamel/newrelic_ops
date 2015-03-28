@@ -23,7 +23,7 @@ info = dict(
 @click.option('-k', '--key', help='new relic data access key', default=False)
 def main(install, key):
     if not install:
-        click.echo(click.help_option())
+        click.echo('Try new_relic --help for useful information!')
     else:
         if not key:
             key = click.prompt('NewRelic data access key')
