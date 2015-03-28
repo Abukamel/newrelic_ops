@@ -2,11 +2,6 @@
 import click
 import salt.config
 import salt.client
-import logging
-
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 def salt_init():
@@ -35,10 +30,10 @@ def main(install, key):
             key = click.prompt('NewRelic data access key')
         caller = salt_init()
         caller.sminion.functions['pkg.install'](name=info['newrelic_url'])
-        logger.info('NewRelic repo has been added!')
+        click.echo(('NewRelic repo has been added!'))
         caller.sminion.functions['pkg.install'](name=info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}])
-        logger.info('%(nl_pkg)s has been installed!' % {'nl_pkg': info['newrelic_package']})
+        click.echo('%(nl_pkg)s has been installed!' % {'nl_pkg': info['newrelic_package']})
 
 
 if __name__ == "__main__":
