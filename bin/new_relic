@@ -3,9 +3,13 @@ import click
 import salt.config
 import salt.client
 
-opts = salt.config.apply_minion_config()
-opts['file_client'] = 'local'
-caller = salt.client.Caller(mopts=opts)
+
+def salt_init():
+    opts = salt.config.apply_minion_config()
+    opts['file_client'] = 'local'
+    caller = salt.client.Caller(mopts=opts)
+
+
 info = dict(
     newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/\
                  newrelic-repo-5-3.noarch.rpm',
@@ -23,6 +27,7 @@ def main(install, key):
     else:
         if not key:
             key = click.prompt('NewRelic data access key')
+        salt_init()
         caller.sminion.functions['pkg.install'](name=info['newrelic_url'])
         caller.sminion.functions['pkg.install'](name=info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}])
