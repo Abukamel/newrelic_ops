@@ -17,6 +17,7 @@ def salt_init():
               is_flag=True)
 @click.option('-k', '--key', help='new relic data access key', default=False)
 def main(install, key):
+    """help page"""
     if not install:
         click.echo('Try new_relic --help for useful information!')
     else:
