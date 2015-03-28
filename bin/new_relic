@@ -8,6 +8,7 @@ def salt_init():
     opts = salt.config.apply_minion_config()
     opts['file_client'] = 'local'
     caller = salt.client.Caller(mopts=opts)
+    return caller
 
 
 info = dict(
