@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-import begin
-import sys
-import logging
+import click
 import salt.config
 import salt.client
 
@@ -13,16 +11,17 @@ def salt_init():
     return caller
 
 
-@begin.start(auto_convert=True)
-@begin.logging
-def main(install=False, key=''):
+@click.command()
+@click.option('-i', '--install',
+              help='Install new relic system monitor',
+              is_flag=True)
+@click.option('-k', '--key', help='new relic data access key', default=False)
+def main(install, key):
     if not install:
-        logging.error('Try -h/--help option for usage info!')
-        sys.exit(1)
+        click.echo('Try new_relic --help for useful information!')
     else:
         if not key:
-            logging.error('Please provide newrelic license key via --key option')
-            sys.exit(1)
+            key = click.prompt('NewRelic data access key')
         caller = salt_init()
         info = dict(
             newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm',
@@ -31,16 +30,20 @@ def main(install=False, key=''):
             % {'l_key': key},
             newrelic_start_cmd=r"/etc/init.d/newrelic-sysmond restart",
             newrelic_chkconfig_cmd='chkconfig newrelic-sysmond on')
-        logging.info(caller.sminion.functions['pkg.install'](sources=[
+        click.echo(caller.sminion.functions['pkg.install'](sources=[
             {'repo': info['newrelic_url']}
         ]))
-        logging.info(caller.sminion.functions['pkg.install'](
+        click.echo(caller.sminion.functions['pkg.install'](
             info['newrelic_package'],
             require=[{'pkg': info['newrelic_url']}]))
-        logging.info(
+        click.echo(
             caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
-        logging.info(
+        click.echo(
             caller.sminion.functions['cmd.run'](info['newrelic_start_cmd']))
-        logging.info(
+        click.echo(
             caller.sminion.functions['cmd.run'](info['newrelic_chkconfig_cmd'])
         )
+
+
+if __name__ == "__main__":
+    main()

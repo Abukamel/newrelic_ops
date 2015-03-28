@@ -4,7 +4,7 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='newrelic_ops',
-      version='1.0',
+      version='1.1',
       description='newrelic manipulation tool',
       long_description=open('README').read(),
       keywords='newrelic install saltstack automatic',
@@ -13,8 +13,8 @@ setup(name='newrelic_ops',
       author_email='k.tricky@gmail.com',
       license='MIT',
       packages=['newrelic_ops'],
-      install_requires=['click', 'salt<=2014.7.3', 'begins', 'argparse', 'funcsigs'],
+      install_requires=['salt<=2014.7.3', 'begins',],
       dependency_links=['https://pypi.python.org/pypi/salt'],
-      scripts=['bin/new_relic.py', 'bin/new_relic_begin.py'],
+      scripts=['bin/new_relic.py',],
       include_package_data=True,
       zip_safe=False)
