@@ -28,6 +28,12 @@ def main(install, key):
         if not key:
             key = click.prompt('NewRelic data access key')
         caller = salt_init()
+        info = dict(
+            newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/\
+                         newrelic-repo-5-3.noarch.rpm',
+            newrelic_package='newrelic-sysmond',
+            newrelic_license_cmd='nrsysmond-config --set license_key=%(l_key)s' % {'l_key': key}
+        )
         click.echo(caller.sminion.functions['pkg.install'](sources=[{'repo': info['newrelic_url']}]))
         click.echo(caller.sminion.functions['pkg.install'](info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}]))
