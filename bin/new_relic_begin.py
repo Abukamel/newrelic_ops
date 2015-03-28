@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import begin
+import sys
 import logging
 import salt.config
 import salt.client
@@ -16,10 +17,12 @@ def salt_init():
 @begin.logging
 def main(install=False, key=''):
     if not install:
-        logging.error('Try new_relic --help for useful information!')
+        logging.error('Try -h/--help option for usage info!')
+        sys.exit(1)
     else:
         if not key:
             logging.error('Please provide newrelic license key via --key option')
+            sys.exit(1)
         caller = salt_init()
         info = dict(
             newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm',
