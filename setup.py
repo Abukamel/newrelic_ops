@@ -1,4 +1,7 @@
-from setuptools import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 setup(name='newrelic_ops',
       version='0.6',
