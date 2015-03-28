@@ -31,7 +31,7 @@ def main(install, key):
         click.echo(caller.sminion.functions['pkg.install'](sources=[{'repo': info['newrelic_url']}]))
         click.echo(caller.sminion.functions['pkg.install'](info['newrelic_package'],
                                                 require=[{'pkg': info['newrelic_url']}]))
-        click.echo(caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
+        click.echo(caller.sminion.functions['cmd.run']('%s' % info['newrelic_license_cmd']))
         click.echo(info['newrelic_license_cmd'])
 
 
