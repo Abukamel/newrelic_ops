@@ -23,4 +23,4 @@ def main(install=False, key=''):
         if 'debian' in caller.sminion.functions['grains.get']('os_family').lower():
             newrelic.install_debian(key)
         else:
-            pass
+            newrelic.install_linux(key)

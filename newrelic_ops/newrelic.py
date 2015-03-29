@@ -67,11 +67,11 @@ def install_debian(key):
 def install_linux(key):
     caller = salt_init()
     tc.go('http://download.newrelic.com/server_monitor/release/')
-    tc.follow('.*linux.*')
+    tc.follow('.*-linux.tar.gz')
     info = dict(
         newrelic_url = tc.browser.get_url()
     )
-    caller.sminion.functions['file.managed']('/usr/local/src/newrelic.tgz', source=newrelic_url)
+    caller.sminion.functions['file.manage_file'](name='/usr/local/src/newrelic.tgz', source=info['newrelic_url'])
     caller.sminion.functions['archive.tar'](options='xf', source='/usr/local/src/newrelic.tgz', dest='/usr/local/src/newrelic_src')
     caller.sminion.functions['flie.directory_exists']('/etc/newrelic')
     caller.sminion.functions['flie.copy'](src='/usr/local/src/newrelic_src/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond')
