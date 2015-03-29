@@ -71,8 +71,8 @@ def install_linux(key):
     info = dict(
         newrelic_url = tc.browser.get_url()
     )
-    caller.sminion.functions['file.manage_file'](name='/usr/local/src/newrelic.tgz', source=info['newrelic_url'])
-    caller.sminion.functions['archive.tar'](options='xf', source='/usr/local/src/newrelic.tgz', dest='/usr/local/src/newrelic_src')
+    caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url'])
+    caller.sminion.functions['archive.tar'](options='xf', tarfile='/usr/local/src/newrelic.tgz', dest='/usr/local/src/newrelic_src')
     caller.sminion.functions['flie.directory_exists']('/etc/newrelic')
     caller.sminion.functions['flie.copy'](src='/usr/local/src/newrelic_src/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond')
     caller.sminion.functions['flie.copy'](src='/usr/local/src/newrelic_src/scripts/nrsysmond-config', dst='/usr/local/bin')
