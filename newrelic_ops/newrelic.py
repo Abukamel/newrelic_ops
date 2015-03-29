@@ -49,6 +49,9 @@ def install_debian(key):
         newrelic_chkconfig_cmd='chkconfig newrelic-sysmond on'
     )
     logging.info(
+        caller.sminion.functions['pkg.install'](name='wget')
+    )
+    logging.info(
         caller.sminion.functions['cmd.run'](info['apt_repo_cmd']))
     logging.info(
         caller.sminion.functions['cmd.run'](info['repo_trust_cmd']))
