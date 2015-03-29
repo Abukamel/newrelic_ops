@@ -102,7 +102,7 @@ def install_linux(key):
     logging.info(
         caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
     logging.info(
-        caller.sminion.functions['ps.pkill'](pattern='nrsysmond', signal=9)
+        caller.sminion.functions['ps.pkill'](pattern='nrsysmond', signal=9))
     logging.info(
         caller.sminion.functions['cmd.run']('/usr/local/bin/nrsysmond -c /etc/newrelic/nrsysmond.cfg'))
     
