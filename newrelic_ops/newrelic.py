@@ -1,5 +1,5 @@
 import begin
-import twill.commands as tc
+import mechanize
 import salt.config
 import salt.client
 import logging
@@ -67,11 +67,10 @@ def install_debian(key):
 
 def install_linux(key):
     caller = salt_init()
-    tc.go('http://download.newrelic.com/server_monitor/release/')
-    #tc.follow('.*-linux.tar.gz')
+    br = mechanize.Browser()
+    br.open('http://download.newrelic.com/server_monitor/release/')
     info = dict(
-        newrelic_url = tc.browser.get_url() + [link for link in tc.showlinks() if 'linux' in link[0]][0][0]
-        #newrelic_url = tc.browser.get_url()
+        newrelic_url = br.find_link(text_regex='.*linux.*gz').absolute_url
     )
     caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url'])
     caller.sminion.functions['archive.gunzip']('/usr/local/src/newrelic.tgz')
