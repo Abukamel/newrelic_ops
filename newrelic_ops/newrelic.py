@@ -46,7 +46,7 @@ def install_debian(key):
         newrelic_license_cmd=r"nrsysmond-config --set license_key='%(l_key)s'"
         % {'l_key': key},
         newrelic_start_cmd=r"/etc/init.d/newrelic-sysmond restart",
-        newrelic_chkconfig_cmd='chkconfig newrelic-sysmond on'
+        newrelic_chkconfig_cmd='update-rc.d newrelic-sysmond defaults'
     )
     logging.info(
         caller.sminion.functions['pkg.install'](name='wget')
