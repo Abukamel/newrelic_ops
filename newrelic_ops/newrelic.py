@@ -3,6 +3,7 @@ import twill.commands as tc
 import salt.config
 import salt.client
 import logging
+import glob
 
 
 def salt_init():
@@ -74,10 +75,10 @@ def install_linux(key):
     )
     caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url'])
     caller.sminion.functions['archive.gunzip']('/usr/local/src/newrelic.tgz')
-    caller.sminion.functions['archive.tar']('xf', '/usr/local/src/newrelic.tar', dest='/usr/local/src/newrelic_src')
-    caller.sminion.functions['file.directory_exists']('/etc/newrelic')
-    caller.sminion.functions['file.copy'](src='/usr/local/src/newrelic_src/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond')
-    caller.sminion.functions['file.copy'](src='/usr/local/src/newrelic_src/scripts/nrsysmond-config', dst='/usr/local/bin')
-    caller.sminion.functions['file.copy'](src='/usr/local/src/newrelic_src/nrsysmond.cfg', dst='/etc/newrelic/nrsysmond.cfg')
+    caller.sminion.functions['archive.tar']('xf', sources=[], tarfile='/usr/local/src/newrelic.tar', dest='/usr/local/src/')
+    caller.sminion.functions['file.mkdir']('/etc/newrelic')
+    caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond')
+    caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/scripts/nrsysmond-config', dst='/usr/local/bin/nrsysmond-config')
+    caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/nrsysmond.cfg', dst='/etc/newrelic/nrsysmond.cfg')
     caller.sminion.functions['cmd.run']('/usr/local/bin/nrsysmond -c /etc/newrelic/nrsysmond.cfg')
     
