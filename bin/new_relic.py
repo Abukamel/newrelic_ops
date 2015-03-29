@@ -26,7 +26,7 @@ def main(install=False, key=''):
             sys.exit(1)
         caller = newrelic.salt_init()
         if 'redhat' in caller.sminion.functions['grains.get']('os_family').lower():
-            newrelic.install_redhat()
+            newrelic.install_redhat(key)
         if 'debian' in caller.sminion.functions['grains.get']('os_family').lower():
             pass
         else:

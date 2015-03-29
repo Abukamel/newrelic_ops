@@ -9,7 +9,7 @@ def salt_init():
     return caller
 
 
-def install_redhat():
+def install_redhat(key):
     caller = salt_init()
     info = dict(
         newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm',
