@@ -4,6 +4,7 @@ import sys
 import logging
 import salt.config
 import salt.client
+from newrelic_ops import newrelic as newrelic
 
 
 def salt_init():
@@ -23,24 +24,32 @@ def main(install=False, key=''):
         if not key:
             logging.error('Please provide newrelic license key via --key option')
             sys.exit(1)
-        caller = salt_init()
-        info = dict(
-            newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm',
-            newrelic_package='newrelic-sysmond',
-            newrelic_license_cmd=r"nrsysmond-config --set license_key='%(l_key)s'"
-            % {'l_key': key},
-            newrelic_start_cmd=r"/etc/init.d/newrelic-sysmond restart",
-            newrelic_chkconfig_cmd='chkconfig newrelic-sysmond on')
-        logging.info(caller.sminion.functions['pkg.install'](sources=[
-            {'repo': info['newrelic_url']}
-        ]))
-        logging.info(caller.sminion.functions['pkg.install'](
-            info['newrelic_package'],
-            require=[{'pkg': info['newrelic_url']}]))
-        logging.info(
-            caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
-        logging.info(
-            caller.sminion.functions['cmd.run'](info['newrelic_start_cmd']))
-        logging.info(
-            caller.sminion.functions['cmd.run'](info['newrelic_chkconfig_cmd'])
-        )
+        caller = newrelic.salt_init()
+        if 'redhat' in caller.sminion.functions['grains.get']('os_family').lower():
+            newrelic.install_redhat()
+        if 'debian' in caller.sminion.functions['grains.get']('os_family').lower():
+            pass
+        else:
+            pass
+        
+        # caller = salt_init()
+        # info = dict(
+        #     newrelic_url='http://download.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm',
+        #     newrelic_package='newrelic-sysmond',
+        #     newrelic_license_cmd=r"nrsysmond-config --set license_key='%(l_key)s'"
+        #     % {'l_key': key},
+        #     newrelic_start_cmd=r"/etc/init.d/newrelic-sysmond restart",
+        #     newrelic_chkconfig_cmd='chkconfig newrelic-sysmond on')
+        # logging.info(caller.sminion.functions['pkg.install'](sources=[
+        #     {'repo': info['newrelic_url']}
+        # ]))
+        # logging.info(caller.sminion.functions['pkg.install'](
+        #     info['newrelic_package'],
+        #     require=[{'pkg': info['newrelic_url']}]))
+        # logging.info(
+        #     caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
+        # logging.info(
+        #     caller.sminion.functions['cmd.run'](info['newrelic_start_cmd']))
+        # logging.info(
+        #     caller.sminion.functions['cmd.run'](info['newrelic_chkconfig_cmd'])
+        # )
