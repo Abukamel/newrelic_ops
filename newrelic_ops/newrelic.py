@@ -1,5 +1,7 @@
+import begin
 import salt.config
 import salt.client
+import logging
 
 
 def salt_init():
@@ -8,7 +10,7 @@ def salt_init():
     caller = salt.client.Caller(mopts=opts)
     return caller
 
-
+@begin.logging
 def install_redhat(key):
     caller = salt_init()
     info = dict(
