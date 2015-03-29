@@ -80,11 +80,11 @@ def install_linux(key):
         % {'l_key': key},
     )
     logging.info(
-        caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url']))
-    logging.info(
         caller.sminion.functions['file.remove']('/usr/local/src/newrelic.tgz'))
     logging.info(
         caller.sminion.functions['file.remove']('/usr/local/src/newrelic.tar'))
+    logging.info(
+        caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url']))
     logging.info(
         caller.sminion.functions['archive.gunzip']('/usr/local/src/newrelic.tgz'))
     logging.info(
