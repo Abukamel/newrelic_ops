@@ -94,7 +94,7 @@ def install_linux(key):
     logging.info(
         caller.sminion.functions['file.mkdir']('/var/log/newrelic'))
     logging.info(
-        caller.sminion.functions['cmd.run'](name='pkill -9 nrsysmond'))
+        caller.sminion.functions['cmd.run']('pkill -9 nrsysmond'))
     logging.info(
         caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond', remove_existing=True))
     logging.info(
