@@ -82,11 +82,17 @@ def install_linux(key):
     logging.info(
         caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url']))
     logging.info(
+        caller.sminion.functions['file.remove']('/usr/local/src/newrelic.tgz'))
+    logging.info(
+        caller.sminion.functions['file.remove']('/usr/local/src/newrelic.tar'))
+    logging.info(
         caller.sminion.functions['archive.gunzip']('/usr/local/src/newrelic.tgz'))
     logging.info(
         caller.sminion.functions['archive.tar']('xf', sources=[], tarfile='/usr/local/src/newrelic.tar', dest='/usr/local/src/'))
     logging.info(
         caller.sminion.functions['file.mkdir']('/etc/newrelic'))
+    logging.info(
+        caller.sminion.functions['file.mkdir']('/var/log/newrelic'))
     logging.info(
         caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond'))
     logging.info(
