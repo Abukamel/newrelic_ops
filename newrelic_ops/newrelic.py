@@ -94,6 +94,8 @@ def install_linux(key):
     logging.info(
         caller.sminion.functions['file.mkdir']('/var/log/newrelic'))
     logging.info(
+        caller.sminion.functions['ps.pkill'](pattern='nrsysmond', signal=9))
+    logging.info(
         caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond', remove_existing=True))
     logging.info(
         caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/scripts/nrsysmond-config', dst='/usr/local/bin/nrsysmond-config', remove_existing=True))
@@ -101,8 +103,6 @@ def install_linux(key):
         caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/nrsysmond.cfg', dst='/etc/newrelic/nrsysmond.cfg', remove_existing=True))
     logging.info(
         caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
-    logging.info(
-        caller.sminion.functions['ps.pkill'](pattern='nrsysmond', signal=9))
     logging.info(
         caller.sminion.functions['cmd.run']('/usr/local/bin/nrsysmond -c /etc/newrelic/nrsysmond.cfg'))
     
