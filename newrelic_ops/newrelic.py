@@ -67,15 +67,17 @@ def install_debian(key):
 def install_linux(key):
     caller = salt_init()
     tc.go('http://download.newrelic.com/server_monitor/release/')
-    tc.follow('.*-linux.tar.gz')
+    #tc.follow('.*-linux.tar.gz')
     info = dict(
-        newrelic_url = tc.browser.get_url()
+        newrelic_url = tc.browser.get_url() + [link for link in tc.showlinks() if 'linux' in link[0]][0][0]
+        #newrelic_url = tc.browser.get_url()
     )
     caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url'])
-    caller.sminion.functions['archive.tar'](options='xf', tarfile='/usr/local/src/newrelic.tgz', dest='/usr/local/src/newrelic_src')
-    caller.sminion.functions['flie.directory_exists']('/etc/newrelic')
-    caller.sminion.functions['flie.copy'](src='/usr/local/src/newrelic_src/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond')
-    caller.sminion.functions['flie.copy'](src='/usr/local/src/newrelic_src/scripts/nrsysmond-config', dst='/usr/local/bin')
-    caller.sminion.functions['flie.copy'](src='/usr/local/src/newrelic_src/nrsysmond.cfg', dst='/etc/newrelic/nrsysmond.cfg')
+    caller.sminion.functions['archive.gunzip']('/usr/local/src/newrelic.tgz')
+    caller.sminion.functions['archive.tar']('xf', '/usr/local/src/newrelic.tar', dest='/usr/local/src/newrelic_src')
+    caller.sminion.functions['file.directory_exists']('/etc/newrelic')
+    caller.sminion.functions['file.copy'](src='/usr/local/src/newrelic_src/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond')
+    caller.sminion.functions['file.copy'](src='/usr/local/src/newrelic_src/scripts/nrsysmond-config', dst='/usr/local/bin')
+    caller.sminion.functions['file.copy'](src='/usr/local/src/newrelic_src/nrsysmond.cfg', dst='/etc/newrelic/nrsysmond.cfg')
     caller.sminion.functions['cmd.run']('/usr/local/bin/nrsysmond -c /etc/newrelic/nrsysmond.cfg')
     
