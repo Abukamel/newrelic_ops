@@ -36,6 +36,7 @@ def install_redhat(key):
         caller.sminion.functions['cmd.run'](info['newrelic_chkconfig_cmd'])
     )
 
+@begin.logging
 def install_debian(key):
     caller = salt_init()
     info = dict(
@@ -68,19 +69,32 @@ def install_debian(key):
         caller.sminion.functions['cmd.run'](info['newrelic_chkconfig_cmd'])
     )
 
+@begin.logging
 def install_linux(key):
     caller = salt_init()
     br = mechanize.Browser()
     br.open('http://download.newrelic.com/server_monitor/release/')
     info = dict(
-        newrelic_url = br.find_link(text_regex='.*linux.*gz').absolute_url
+        newrelic_url = br.find_link(text_regex='.*linux.*gz').absolute_url,
+        newrelic_license_cmd=r"nrsysmond-config --set license_key='%(l_key)s'"
+        % {'l_key': key},
     )
-    caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url'])
-    caller.sminion.functions['archive.gunzip']('/usr/local/src/newrelic.tgz')
-    caller.sminion.functions['archive.tar']('xf', sources=[], tarfile='/usr/local/src/newrelic.tar', dest='/usr/local/src/')
-    caller.sminion.functions['file.mkdir']('/etc/newrelic')
-    caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond')
-    caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/scripts/nrsysmond-config', dst='/usr/local/bin/nrsysmond-config')
-    caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/nrsysmond.cfg', dst='/etc/newrelic/nrsysmond.cfg')
-    caller.sminion.functions['cmd.run']('/usr/local/bin/nrsysmond -c /etc/newrelic/nrsysmond.cfg')
+    logging.info(
+        caller.sminion.functions['cp.get_url'](dest='/usr/local/src/newrelic.tgz', path=info['newrelic_url']))
+    logging.info(
+        caller.sminion.functions['archive.gunzip']('/usr/local/src/newrelic.tgz'))
+    logging.info(
+        caller.sminion.functions['archive.tar']('xf', sources=[], tarfile='/usr/local/src/newrelic.tar', dest='/usr/local/src/'))
+    logging.info(
+        caller.sminion.functions['file.mkdir']('/etc/newrelic'))
+    logging.info(
+        caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/daemon/nrsysmond.x64', dst='/usr/local/bin/nrsysmond'))
+    logging.info(
+        caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/scripts/nrsysmond-config', dst='/usr/local/bin/nrsysmond-config'))
+    logging.info(
+        caller.sminion.functions['file.copy'](src=glob.glob('/usr/local/src/newrelic-sysmond-*-linux')[0] + '/nrsysmond.cfg', dst='/etc/newrelic/nrsysmond.cfg'))
+    logging.info(
+        caller.sminion.functions['cmd.run'](info['newrelic_license_cmd']))
+    logging.info(
+        caller.sminion.functions['cmd.run']('/usr/local/bin/nrsysmond -c /etc/newrelic/nrsysmond.cfg'))
     
