@@ -1,1 +1,22 @@
 This is a package for installing new relic free monitoring on Linux server!
+usage: new_relic.py [-h] [-v | -q]
+                    [--loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+                    [--logfile LOGFILE] [--logfmt LOGFMT] [--install]
+                    [--no-install] [--key KEY]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Increse logging output
+  -q, --quiet           Decrease logging output
+  --install             (default: False) installs nrsysmond on server!
+  --no-install
+  --key KEY, -k KEY     (default: ) newrelic account key needed for installation
+
+logging:
+  Detailed control of logging output
+
+  --loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        Set explicit log level
+  --logfile LOGFILE     Ouput log messages to file
+  --logfmt LOGFMT       Log message format
+
